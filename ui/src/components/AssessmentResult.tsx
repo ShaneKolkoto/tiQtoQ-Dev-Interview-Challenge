@@ -8,7 +8,9 @@ export function AssessmentResult({ assessment }: { assessment: ChangeAssessment 
         {assessment.riskLevel} risk
       </div>
 
-      <p className="rationale">{assessment.rationale}</p>
+      <ul className="rationale" aria-label="Risk rationale">
+        {assessment.rationale.map((reason) => <li key={reason}>{reason}</li>)}
+      </ul>
 
       <div className="result-card">
         <h3>Potentially impacted</h3>

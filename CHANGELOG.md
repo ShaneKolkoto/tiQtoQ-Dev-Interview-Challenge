@@ -15,3 +15,4 @@
 - Moved API and UI tests into dedicated `api/test` and `ui/test` folders.
 - Updated the README assumptions to match configurable CORS and the completed test coverage.
 - Refined the API router fallback after separating controllers, middleware, services, components, and types.
+- Added a shared 2,000-character description limit, precise analyser patterns, and structured rationale points.

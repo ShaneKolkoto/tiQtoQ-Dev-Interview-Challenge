@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import type { ChangeAssessment } from "@dev-interview-challenge/shared";
+import { maxDescriptionLength, type ChangeAssessment } from "@dev-interview-challenge/shared";
 
 import { AssessmentResult } from "../src/components/AssessmentResult";
 import { analyseChange } from "../src/services/change-analysis";
@@ -48,6 +48,7 @@ export default function Home() {
             id="change-description"
             name="description"
             aria-describedby="description-hint"
+            maxLength={maxDescriptionLength}
             value={description}
             onChange={(event) => setDescription(event.target.value)}
             placeholder="For example: Add the ability for administrators to reset another user's MFA configuration."

@@ -65,4 +65,18 @@ describe("API server", () => {
     expect(response.status).toBe(413);
     expect(await response.json()).toEqual({ error: "Request body is too large." });
   });
+
+  it("rejects descriptions over the product limit", async () => {
+    const baseUrl = await requestServer();
+    const response = await fetch(`${baseUrl}/api/analyse`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ description: "x".repeat(2_001) })
+    });
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({
+      error: "A change description must be 2000 characters or fewer."
+    });
+  });
 });

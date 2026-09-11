@@ -1,5 +1,7 @@
 import type { IncomingMessage } from "node:http";
 
+import { maxDescriptionLength } from "@dev-interview-challenge/shared";
+
 const maxBodySize = 100_000;
 
 export function getDescription(value: unknown): string {
@@ -15,6 +17,10 @@ export function getDescription(value: unknown): string {
   const description = value.description.trim();
   if (description.length === 0) {
     throw new Error("A change description is required.");
+  }
+
+  if (description.length > maxDescriptionLength) {
+    throw new Error(`A change description must be ${maxDescriptionLength} characters or fewer.`);
   }
 
   return description;

@@ -17,6 +17,13 @@ describe("analyseChange", () => {
     expect(assessment.impactedAreas).toContain("Authentication");
   });
 
+  it("does not treat broad words as specialised risk signals", () => {
+    const assessment = analyseChange("Update the internal project status wording.");
+
+    expect(assessment.riskLevel).toBe("Low");
+    expect(assessment.impactedAreas).toEqual(["Application behaviour"]);
+  });
+
   it("returns high risk when several boundaries are affected", () => {
     const assessment = analyseChange(
       "Allow administrators to reset another user's MFA configuration and record the security event in the database."
@@ -28,6 +35,10 @@ describe("analyseChange", () => {
     );
     expect(assessment.recommendedTesting).toEqual(expect.arrayContaining([
       "Verify unauthorised users cannot perform the change through the UI or API."
+    ]));
+    expect(assessment.rationale).toEqual(expect.arrayContaining([
+      "Authentication signals were detected in the change description.",
+      "Authorisation signals were detected in the change description."
     ]));
   });
 });

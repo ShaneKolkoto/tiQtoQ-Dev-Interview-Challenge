@@ -31,7 +31,7 @@ describe("Change Risk Analyser", () => {
         riskLevel: "Medium",
         impactedAreas: ["Authentication"],
         recommendedTesting: ["Verify login."],
-        rationale: "Authentication is affected."
+        rationale: ["Authentication signals were detected."]
       }
     }), { status: 200 }));
 

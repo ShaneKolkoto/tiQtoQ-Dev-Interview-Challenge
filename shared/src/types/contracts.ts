@@ -1,4 +1,5 @@
 export const riskLevels = ["Low", "Medium", "High"] as const;
+export const maxDescriptionLength = 2000;
 
 export type RiskLevel = (typeof riskLevels)[number];
 
@@ -10,7 +11,7 @@ export interface ChangeAssessment {
   riskLevel: RiskLevel;
   impactedAreas: string[];
   recommendedTesting: string[];
-  rationale: string;
+  rationale: string[];
 }
 
 export interface AnalyseChangeResponse {
@@ -31,7 +32,7 @@ export function isChangeAssessment(value: unknown): value is ChangeAssessment {
     (assessment.riskLevel === "Low" || assessment.riskLevel === "Medium" || assessment.riskLevel === "High") &&
     isStringArray(assessment.impactedAreas) &&
     isStringArray(assessment.recommendedTesting) &&
-    typeof assessment.rationale === "string"
+    isStringArray(assessment.rationale)
   );
 }
 

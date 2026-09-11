@@ -182,6 +182,13 @@ pnpm audit      # check dependency advisories
 
 The root commands include `pnpm dev:api`, `pnpm typecheck`, and a build that validates both the UI and API. The current analyser uses deterministic keyword rules so it works locally without an external AI provider; those rules can be replaced behind the same assessment contract later. The API closes gracefully on `SIGINT` and `SIGTERM`.
 
+See [TEST-CASES.md](TEST-CASES.md) for manual scenarios covering normal changes, false-positive resistance, symbols and numbers, long descriptions, malformed requests, API responses, and UI accessibility checks.
+For copy-paste descriptions specifically intended for the frontend textarea, use [FRONTEND-TEST-INPUTS.md](FRONTEND-TEST-INPUTS.md).
+
+## Analysis approach
+
+The first version intentionally uses deterministic TypeScript rules rather than an AI provider. This keeps the challenge self-contained, produces repeatable results during development and testing, avoids API keys and external service failures, and makes the scoring logic straightforward to review. The analyser returns structured risk, impacted areas, testing recommendations, and rationale points through the shared contract. A future AI provider could be added behind that same service boundary, with schema validation and a deliberate fallback if the provider is unavailable or returns malformed output.
+
 ## What we value
 
 We assess engineering judgement more than feature quantity. Prioritise clear TypeScript, separation of concerns, appropriate error handling, and highly testable business logic. A small, well-tested solution is preferable to a large feature that is hard to understand or verify.
