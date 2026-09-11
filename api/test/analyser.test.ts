@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { analyseChange } from "../src/analyser.js";
+import { analyseChange } from "../src/services/change-risk-analyser.js";
 
 describe("analyseChange", () => {
   it("returns low risk for a change without specialised signals", () => {

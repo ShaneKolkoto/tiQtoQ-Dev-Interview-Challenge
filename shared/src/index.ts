@@ -4,6 +4,6 @@ export type {
   ApiErrorResponse,
   ChangeAssessment,
   RiskLevel
-} from "./contracts";
+} from "./types/contracts";
 
-export { isChangeAssessment, parseAnalyseChangeResponse, riskLevels } from "./contracts";
+export { isChangeAssessment, parseAnalyseChangeResponse, riskLevels } from "./types/contracts";
