@@ -127,15 +127,29 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000). The Change Risk Analyser page is the UI integration point for your work.
 
+The completed solution runs the UI and API as separate processes. Start them in two terminals:
+
+```powershell
+# terminal 1
+pnpm dev
+
+# terminal 2
+pnpm dev:api
+```
+
+The API listens on `http://localhost:4000` and exposes `POST /api/analyse`. Set `NEXT_PUBLIC_API_URL` if the API is hosted somewhere else. Set `ALLOWED_ORIGIN` on the API to the exact origin allowed to call it; it defaults to `http://localhost:3000`.
+
 ## Workspace layout
 
 ```
-ui/       Next.js TypeScript UI starter
-api/      TypeScript API workspace — choose and add your own framework
-shared/   Empty TypeScript workspace for contracts or reusable code you choose to share
+ui/       Next.js TypeScript UI
+api/      Standalone TypeScript HTTP API
+shared/   Shared TypeScript contracts and runtime guards
+api/test/ API unit and integration tests
+ui/test/  UI interaction tests
 ```
 
-`api` intentionally has no source files, HTTP framework, routes, or dependencies. `shared` intentionally has no contracts or validation. Define those boundaries as part of your solution; do not use Next.js API routes for the backend.
+The API uses Node's built-in HTTP server to keep the transport layer small and standalone. The analysis rules live in a pure function, while request and response contracts live in `shared`. The UI calls the API rather than using Next.js API routes.
 
 ## The challenge
 
@@ -162,9 +176,15 @@ pnpm dev        # start the Next.js UI
 pnpm typecheck  # type-check the UI
 pnpm lint       # lint the UI
 pnpm build      # create a production UI build
+pnpm test       # run analyser, API, and UI tests
+pnpm audit      # check dependency advisories
 ```
 
-Add API and shared-package commands as your design requires. Update the root commands if your finished solution needs to run the UI and API together.
+The root commands include `pnpm dev:api`, `pnpm typecheck`, and a build that validates both the UI and API. The current analyser uses deterministic keyword rules so it works locally without an external AI provider; those rules can be replaced behind the same assessment contract later. The API closes gracefully on `SIGINT` and `SIGTERM`.
+
+## Analysis approach
+
+The first version intentionally uses deterministic TypeScript rules rather than an AI provider. This keeps the challenge self-contained, produces repeatable results during development and testing, avoids API keys and external service failures, and makes the scoring logic straightforward to review. The analyser returns structured risk, impacted areas, testing recommendations, and rationale points through the shared contract. A future AI provider could be added behind that same service boundary, with schema validation and a deliberate fallback if the provider is unavailable or returns malformed output.
 
 ## What we value
 
@@ -200,5 +220,11 @@ These are deliberately optional.
 Push your completed source code and commits to your fork, then open a pull request **on your forked repository**. Add `@chrisusher-tt` as the reviewer.
 
 Please document running instructions, assumptions, and a short note on what you would improve with more time. 
+
+Current assumptions and follow-up ideas:
+
+- Risk is an advisory signal, not a release gate; teams should review the rationale and test list.
+- The API does not persist submitted descriptions, and its deterministic rules are intentionally advisory rather than a release gate.
+- With more time, add richer rule composition, configurable observability, and deployment-specific operational controls.
 
 Be ready to discuss your architecture, testing approach, AI usage (if any), and time-based trade-offs.

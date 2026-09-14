@@ -7,12 +7,15 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "dev": "pnpm --filter @dev-interview-challenge/ui dev",
-    "build": "pnpm --filter @dev-interview-challenge/ui build",
+    "dev": "pnpm --filter @dev-interview-challenge/shared build && pnpm --parallel --stream --filter @dev-interview-challenge/api --filter @dev-interview-challenge/ui dev",
+    "build": "pnpm --filter @dev-interview-challenge/shared build && pnpm --filter @dev-interview-challenge/ui build && pnpm --filter @dev-interview-challenge/api build",
     "lint": "pnpm --filter @dev-interview-challenge/ui lint",
-    "typecheck": "pnpm --filter @dev-interview-challenge/ui typecheck"
+    "typecheck": "pnpm --filter @dev-interview-challenge/shared typecheck && pnpm --filter @dev-interview-challenge/ui typecheck && pnpm --filter @dev-interview-challenge/api typecheck",
+    "test": "pnpm --filter @dev-interview-challenge/shared build && vitest run"
   },
   "devDependencies": {
-    "typescript": "5.9.2"
+    "@vitejs/plugin-react": "^6.1.1",
+    "typescript": "5.9.2",
+    "vitest": "^5.0.0"
   }
 }
